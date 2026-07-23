@@ -27,5 +27,3 @@ def sentiment_analyzer(text_to_analyse):
 
     # Returning a dictionary containing sentiment analysis results 
     return {'label': label, 'score': score}
-
-print(sentiment_analyzer("I love this device"))
