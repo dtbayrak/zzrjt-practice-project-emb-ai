@@ -18,12 +18,8 @@ def sentiment_analyzer(text_to_analyse):
     # Sending a POST request to the sentiment analysis API
     response = requests.post(url, json = myobj, headers=header) 
 
-    # Parsing the JSON response from the API 
+    # Parsing the JSON response and convert it into object (deserialize)
     formatted_response = json.loads(response.text)
-
-    print(type(response.text))
-    print(type(formatted_response))
-    print(formatted_response)
 
     # Extracting sentiment label and score from the response 
     label = formatted_response['documentSentiment']['label'] 
@@ -31,3 +27,5 @@ def sentiment_analyzer(text_to_analyse):
 
     # Returning a dictionary containing sentiment analysis results 
     return {'label': label, 'score': score}
+
+print(sentiment_analyzer("I love this device"))
