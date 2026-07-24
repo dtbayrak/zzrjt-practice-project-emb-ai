@@ -2,10 +2,8 @@
     analysis to be executed over the Flask channel and deployed on
     localhost:5000.
 '''
-
 from flask import Flask, render_template, request
 from sentimentanalysis.sentiment_analysis import sentiment_analyzer
-
 
 app = Flask('Sentiment Analyzer')
 
@@ -19,31 +17,31 @@ def sent_analyzer():
     # Retrieve the text to analyze from the request arguments
     text_to_analyze = request.args.get('textToAnalyze')
 
-    # Pass the text to the sentiment_analyzer function and store the response 
+    # Pass the text to the sentiment_analyzer function and store the response
     response = sentiment_analyzer(text_to_analyze)
 
     # Extract the label and score from the response
     label = response['label']
     score = response['score']
 
-    # Return a formatted string with the sentiment label and score 
-    return "The given text has been identified as {} with a score of {}.".format(label.split('_')[1], score)
-
-
+    if score is None:
+        return f"Invalid input! Try again. ({label})"
+    else:
+        # Return a formatted string with the sentiment label and score
+        s = "The given text has been identified as {} with a score of {}."
+        return s.format(label.split('_')[1], score)
 
 @app.route("/")
 def render_index_page():
     ''' This function initiates the rendering of the main application
         page over the Flask channel
     '''
-    return render_template()
-
+    return render_template('index.html')
 
 @app.errorhandler(500)
 def server_error(err):
+    ''' Custom global error handler '''
     return {"message": str(err)}, 500
 
 if __name__ == "__main__":
-    ''' This functions executes the flask app and deploys it on localhost:5000
-    '''
     app.run(host = '0.0.0.0', port = '5000')
